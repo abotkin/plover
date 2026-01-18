@@ -162,9 +162,6 @@ class PloverHid(ThreadedStenotypeBase):
                     d["path"]
                     for d in hid.enumerate()
                     if (d.get("usage_page") == USAGE_PAGE and d.get("usage") == USAGE)
-                    or (
-                        d.get("usage_page") == 0 and d.get("usage") == 0
-                    )  # Fallback for Linux
                 ]
             except Exception as e:
                 log.debug(f"device scan enumerate failed: {e}")
