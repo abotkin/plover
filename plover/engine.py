@@ -125,7 +125,7 @@ class StenoEngine:
         machine_state (str): The connection state of the current machine. One of
             ``stopped``, ``initializing``, ``connected`` or ``disconnected``.
         output (bool): ``True`` if steno output is enabled, ``False`` otherwise.
-        config (plover.config.Config): A :class:`Config<plover.config.Config>` object
+        _config (plover.config.Config): A :class:`Config<plover.config.Config>` object
             containing the engine's configuration.
         translator_state (plover.translation._State): A
             :class:`_State<plover.translation._State>` object containing the current
