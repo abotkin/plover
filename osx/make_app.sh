@@ -63,8 +63,27 @@ run_eval "export SSL_CERT_FILE='$SSL_CERT_FILE'"
 run_eval "unset __PYVENV_LAUNCHER__"
 python='appdir_python'
 
+# Ensure pip prefers universal2 wheels and source builds target both architectures.
+export _PYTHON_HOST_PLATFORM="macosx-${py_installer_macos}.0-universal2"
+export ARCHFLAGS="-arch x86_64 -arch arm64"
+
+# Remove single-architecture macOS wheels from the cache. The tox dev environment
+# shares .cache/wheels/ and populates it with host-arch-only wheels during its own
+# dependency installation, before make_app.sh runs. Removing them forces pip to
+# re-download universal2 wheels or rebuild from source with ARCHFLAGS.
+for whl in .cache/wheels/*.whl; do
+    [ -f "$whl" ] || continue
+    case "$(basename "$whl")" in
+        *universal2*) ;;
+        *macosx*) echo "Removing single-arch cached wheel: $whl"; rm -f "$whl" ;;
+    esac
+done
+
 # Install Plover and dependencies.
-bootstrap_dist "$plover_wheel"
+bootstrap_dist "$plover_wheel" --no-cache-dir --no-binary cffi
+
+# Verify all installed binaries are universal.
+run bash osx/check_universal.sh "$frameworks_dir/Python.framework" "${py_version%.*}"
 
 # ------- Start: Build & bundle hidapi from source  -------
 . ./osx/build_hidapi.sh
