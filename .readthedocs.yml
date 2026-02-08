@@ -9,7 +9,9 @@ build:
     python: "3.12"
   jobs:
     post_install:
+      - python -m pip install -c reqs/constraints.txt --no-binary=plover-stroke plover-stroke
       - python -m pip install -c reqs/constraints.txt -r reqs/dist.txt
+      - python -m pip install -c reqs/constraints.txt -e .
   apt_packages:
     - python3-dev
     - build-essential
