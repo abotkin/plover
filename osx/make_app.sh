@@ -79,7 +79,7 @@ for whl in .cache/wheels/*.whl; do
 done
 
 # Install Plover and dependencies.
-bootstrap_dist "$plover_wheel" --no-cache-dir --no-binary cffi
+bootstrap_dist "$plover_wheel" --no-cache-dir --no-binary cffi,hidapi
 
 # Verify all installed binaries are universal.
 run bash osx/check_universal.sh "$frameworks_dir/Python.framework" "${py_version%.*}"
