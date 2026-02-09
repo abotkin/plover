@@ -78,8 +78,17 @@ for whl in .cache/wheels/*.whl; do
     esac
 done
 
+# Determine which packages lack universal2 wheels and must be built from source.
+echo "Checking PyPI for universal2 wheel availability..."
+no_binary_list=$(python3 osx/find_non_universal_wheels.py "${py_version%.*}" reqs/constraints.txt)
+extra_args=(--no-cache-dir)
+if [ -n "$no_binary_list" ]; then
+    echo "Packages requiring source builds for universal2: $no_binary_list"
+    extra_args+=(--no-binary "$no_binary_list")
+fi
+
 # Install Plover and dependencies.
-bootstrap_dist "$plover_wheel" --no-cache-dir --no-binary cffi,hidapi
+bootstrap_dist "$plover_wheel" "${extra_args[@]}"
 
 # Verify all installed binaries are universal.
 run bash osx/check_universal.sh "$frameworks_dir/Python.framework" "${py_version%.*}"
