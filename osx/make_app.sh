@@ -14,7 +14,7 @@ plover_wheel="$1"
 . ./osx/deps.sh
 
 py_version="$py_installer_version"
-bundle_id="org.openstenoproject.plover"
+bundle_id="com.amorphous.oss.plover"
 
 echo "Making Plover.app with Plover wheel $plover_wheel."
 
