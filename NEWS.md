@@ -1,3 +1,20 @@
+# v5.3.0 (2026-02-09)
+
+
+## Features
+
+No significant changes.
+
+## Bugfixes
+
+### macOS
+
+- Fixed startup hang on Intel Macs. (#1805)
+
+## API
+
+No significant changes.
+
 # v5.2.1 (2026-02-06)
 
 
