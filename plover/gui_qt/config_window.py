@@ -335,6 +335,7 @@ class ConfigOption:
         # Other widgets to be added immediately after the main widget_class
         # Does not work in dependents
         self.additional_widget_classes = additional_widget_classes
+        self.additional_widgets = []
 
 
 class ConfigWindow(QDialog, Ui_ConfigWindow, WindowStateMixin):
@@ -538,23 +539,23 @@ class ConfigWindow(QDialog, Ui_ConfigWindow, WindowStateMixin):
                                 "colemak": "colemak",
                                 "colemak-dh": "colemak-dh",
                                 "dvorak": "dvorak",
-                                "wayland-auto": "wayland-auto",
+                                "wayland-auto": "Wayland auto detect",
                             },
                         ),
                         _(
                             "Set the keyboard layout configured in your system.\n"
                             "This only applies when using Linux/BSD and not using X11.\n\n"
-                            "When wayland-auto is selected,"
-                            "Plover is only able detect the first keyboard layout\n"
-                            "and can not detect to layout switches."
+                            "When Wayland auto detect is selected,"
+                            "Plover is only able to detect the first keyboard layout\n"
+                            "and can not detect layout switches."
                         ),
                         additional_widget_classes=[
                             partial(
                                 TextWrapQLabel,
                                 _(
-                                    "When wayland-auto is selected, "
-                                    "Plover is only able detect the first keyboard layout "
-                                    "and can not detect to layout switches."
+                                    "When Wayland auto detect is selected, "
+                                    "Plover is only able to detect the first keyboard layout "
+                                    "and can not detect layout switches."
                                 ),
                             )
                         ],
@@ -624,7 +625,9 @@ class ConfigWindow(QDialog, Ui_ConfigWindow, WindowStateMixin):
                 option.label.setBuddy(option.widget)
                 layout.addRow(option.label, option.widget)
                 for additional_widget_class in option.additional_widget_classes:
-                    layout.addRow(None, additional_widget_class())
+                    additional_widget = additional_widget_class()
+                    layout.addRow(None, additional_widget)
+                    option.additional_widgets.append(additional_widget)
             frame = QFrame()
             frame.setLayout(layout)
             frame.setAccessibleName(section)
@@ -648,6 +651,8 @@ class ConfigWindow(QDialog, Ui_ConfigWindow, WindowStateMixin):
             if keyboard_layout_option is not None:
                 keyboard_layout_option.label.hide()
                 keyboard_layout_option.widget.hide()
+                for additional_widget in keyboard_layout_option.additional_widgets:
+                    additional_widget.hide()
 
         # temporary hiding start_minimized setting on macOS due to bug in
         # macOS 26, see https://github.com/openstenoproject/plover/issues/1782
