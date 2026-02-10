@@ -1,3 +1,24 @@
+# v5.2.2 (2026-02-10)
+
+
+## Features
+
+No significant changes.
+
+## Bugfixes
+
+### User Interface
+
+- Hide Wayland keymap help text when not on Linux and improve wording. (#1817)
+
+### macOS
+
+- Fixed startup hang when launching Plover on Intel Macs (#1820)
+
+## API
+
+No significant changes.
+
 # v5.2.1 (2026-02-06)
 
 
