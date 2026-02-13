@@ -41,3 +41,5 @@ exclude .readthedocs.yml
 exclude plover/gui_qt/*_rc.py
 exclude plover/gui_qt/*_ui.py
 exclude .mailmap
+exclude .python-version
+exclude CLAUDE.md
